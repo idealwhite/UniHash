@@ -14,9 +14,9 @@ Pytorch implementation of the paper "Contrastive Label Correlation Enhanced Unif
 Install the python packages following [VinVL](https://github.com/microsoft/Oscar/blob/master/INSTALL.md). 
 
 # Dataset and Pre-processed Files
-You need to download the dataset COCO to reproduce the exprements, and also SBU for the large version.
+You need to download the dataset NUS-WIDE, IAPR-TC, MIRFlickr-25k to reproduce the exprements.
 
-Besides, we use the features extracted by VinVL, which are given in their [download page](https://github.com/microsoft/Oscar/blob/master/VinVL_DOWNLOAD.md). You can directly download these features from [coco](https://biglmdiag.blob.core.windows.net/vinvl/image_features/coco_X152C4_frcnnbig2_exp168model_0060000model.roi_heads.nm_filter_2_model.roi_heads.score_thresh_0.2/model_0060000/) and [flikckr30k](https://biglmdiag.blob.core.windows.net/vinvl/image_features/flickr30k_X152C4_frcnnbig2_exp168model_0060000model.roi_heads.nm_filter_2_model.roi_heads.score_thresh_0.2/model_0060000/).
+Moreover, we use the features extracted by VinVL, which are given in their [download page](https://github.com/microsoft/Oscar/blob/master/VinVL_DOWNLOAD.md).
 
 
 If you want to run the model on your customed data, please refer to [Scene Graph](https://github.com/microsoft/scene_graph_benchmark) to extract the features, which is specified by the VinVL repo.
