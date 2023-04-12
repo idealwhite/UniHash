@@ -14,43 +14,40 @@ Pytorch implementation of the paper "Contrastive Label Correlation Enhanced Unif
 Install the python packages following [VinVL](https://github.com/microsoft/Oscar/blob/master/INSTALL.md). 
 
 # Dataset and Pre-processed Files
-You need to download the dataset NUS-WIDE, IAPR-TC, MIRFlickr-25k to reproduce the exprements.
+You need to download the dataset NUS-WIDE, IAPR-TC, MIRFlickr-25k to reproduce the exprements. 
+Then you need [pre-processed label files](https://drive.google.com/file/d/1w7HuIqffju7joFqUWKiqCwXd3QNlna75/view?usp=share_link) from google drive, and save them into corresponding datasets.
 
-Moreover, we use the features extracted by VinVL, which are given in their [download page](https://github.com/microsoft/Oscar/blob/master/VinVL_DOWNLOAD.md).
-
-
-If you want to run the model on your customed data, please refer to [Scene Graph](https://github.com/microsoft/scene_graph_benchmark) to extract the features, which is specified by the VinVL repo.
+Then, please refer to [Scene Graph](https://github.com/microsoft/scene_graph_benchmark) to extract the image features. 
  
 
-# Pre-trained Model Checkpoints
+## Initialize weights (optional)
 The decomposition is applied on the pre-trained one stream VinVL [model](https://github.com/microsoft/Oscar/blob/master/VinVL_DOWNLOAD.md#pre-trained-models), so you need to download it first.
 ```
 path/to/azcopy copy 'https://biglmdiag.blob.core.windows.net/vinvl/model_ckpts/TASK_NAME' coco_ir --recursive
 ```
 
-Afterwards, you can run our code to perform decomposition.
+Afterwards, you can run our code to train UniHash.
 
-You can also directly use our pre-trained checkpoints for [Flickr30k](https://drive.google.com/file/d/1nL1GUj62TssgRO34SoHwKKXVFrXRktrw/view?usp=sharing) and [COCO](https://drive.google.com/file/d/1nL1GUj62TssgRO34SoHwKKXVFrXRktrw/view?usp=sharing).
+
+## Pre-trained Model Checkpoints
+You can also directly use our pre-trained checkpoints for [IAPR](https://drive.google.com/file/d/1h4nNR8_hORjtwZpOvf4K2Z5HG1J2q3nr/view?usp=share_link).
 
 # Running
-Run contrastive_learn.py using following args:
+Run contrastive_learn.py using following args (take NUS-WIDE as an example):
 ```
-"program": "${workspaceFolder}/base.py",
+"program": "${workspaceFolder}/try_contrastive_new.py",
 "args": [
-    "--tagslabel",
-    "/data/wuhongfa/hashing/data/coco/img_tagslabel.json",
-    "--img_feat_file",
-    "/data/wuhongfa/hashing/data/coco/model_0060000/features.tsv",
+    "--tagslabel", "NUS-WIDE/img_tagslabel.json", # from proided files
+    "--class_name", "NUS-WIDE/class_name.json", # from proided files
+    "--img_feat_file", "NUS-WIDE/vinvl_vg_x152c4/predictions.tsv", # extracted by Scene Graph
+    "--eval_model_dir", "vinvl/checkpoint-234-15000", # initialized weights
     "--do_lower_case",
     "--output_dir",
     "output/coco_base",
-    "--eval_model_dir",
-    "/data/wuhongfa/hashing/data/checkpoint/checkpoint-1340000/",
     "--training_size","10000",
     "--query_size","5000",
     "--database_size","20000",
     "--class_number","80",
-    "--class_name","/data/wuhongfa/hashing/data/coco/class_name.json",
     "--bit_num","64",
     "--batch_size","128",
     "--train",
@@ -62,20 +59,17 @@ For test, you can use the following args:
 ```
 "program": "${workspaceFolder}/base.py",
 "args": [
-    "--tagslabel",
-    "/data/wuhongfa/hashing/data/coco/img_tagslabel.json",
-    "--img_feat_file",
-    "/data/wuhongfa/hashing/data/coco/model_0060000/features.tsv",
+    "--tagslabel", "NUS-WIDE/img_tagslabel.json", 
+    "--class_name", "NUS-WIDE/class_name.json",
+    "--img_feat_file", "NUS-WIDE/vinvl_vg_x152c4/features.tsv",
+    "--eval_model_dir", "/data/checkpoint/checkpoint-1340000/",
     "--do_lower_case",
     "--output_dir",
     "output/coco_base",
-    "--eval_model_dir",
-    "/data/wuhongfa/hashing/data/checkpoint/checkpoint-1340000/",
     "--training_size","10000",
     "--query_size","5000",
     "--database_size","20000",
     "--class_number","80",
-    "--class_name","/data/wuhongfa/hashing/data/coco/class_name.json",
     "--bit_num","64",
     "--batch_size","128",
     "--test",
